@@ -27,7 +27,8 @@ public-transport-timetable -- это сервис расписаний движ�
 
 3. Приемочные тесты - [public-transport-timetable-acceptance](public-transport-timetable-acceptance)
 
-[//]: # (4. Архитектура)
+4. Архитектура
+   1. [Архитектура](./docs/04-architecture/01-arch.md)
 
 [//]: # (    1. [Компонентная схема]&#40;./docs/04-architecture/01-arch.md&#41;)
 
