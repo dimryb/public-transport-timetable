@@ -10,6 +10,6 @@ open class DraftTestBase(
     prop: String,
 ) : FunSpec({
     test("$prop: my first test").config(severity = TestCaseSeverityLevel.MINOR) {
-        1 + 2 shouldBe 4
+        1 + 2 shouldBe 3
     }
 })
