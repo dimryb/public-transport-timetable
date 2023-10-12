@@ -15,7 +15,7 @@ subprojects {
     version = "1.0-SNAPSHOT"
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "19"
+        kotlinOptions.jvmTarget = "17"
     }
 }
 
