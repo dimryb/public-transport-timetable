@@ -25,7 +25,7 @@ public-transport-timetable -- это сервис расписаний движ�
    1. [Схема инфраструктуры](./docs/02-devops/01-infrastruture.md)
    2. [Схема мониторинга](./docs/02-devops/02-monitoring.md)
 
-[//]: # (3. Тесты)
+3. Приемочные тесты - [public-transport-timetable-acceptance](public-transport-timetable-acceptance)
 
 [//]: # (4. Архитектура)
 
