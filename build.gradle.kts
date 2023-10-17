@@ -18,3 +18,16 @@ subprojects {
         kotlinOptions.jvmTarget = "17"
     }
 }
+
+tasks {
+    withType<Test>().configureEach {
+        useJUnitPlatform()
+    }
+    test {
+        systemProperty("kotest.framework.test.severity", "NORMAL")
+    }
+    create<Test>("test-strict") {
+        systemProperty("kotest.framework.test.severity", "MINOR")
+        group = "verification"
+    }
+}

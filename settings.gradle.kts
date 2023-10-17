@@ -7,3 +7,5 @@ pluginManagement {
         kotlin("jvm") version kotlinVersion apply false
     }
 }
+
+include("public-transport-timetable-acceptance")
