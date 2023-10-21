@@ -11,7 +11,7 @@ allprojects {
 }
 
 subprojects {
-    group = "space.rybakov.public-transport-timetable"
+    group = "space.rybakov.timetable"
     version = "1.0-SNAPSHOT"
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

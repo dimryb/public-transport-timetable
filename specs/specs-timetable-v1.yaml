@@ -1,0 +1,416 @@
+openapi: 3.0.4
+info:
+  title: "Marketplace ${VERSION_APP}"
+  description: This is a place where sellers and buyers meat each other
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: timetable
+    description: Расписание общественного транспорта
+paths:
+  /trip/create:
+    post:
+      tags:
+        - timetable
+      summary: Create trip
+      operationId: tripCreate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripCreateResponse'
+  /trip/read:
+    post:
+      tags:
+        - timetable
+      summary: Read trip
+      operationId: tripRead
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripReadResponse'
+  /trip/update:
+    post:
+      tags:
+        - timetable
+      summary: Update trip
+      operationId: tripUpdate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripUpdateResponse'
+  /trip/delete:
+    post:
+      tags:
+        - timetable
+      summary: Delete trip
+      operationId: tripDelete
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripDeleteResponse'
+  /trip/search:
+    post:
+      tags:
+        - timetable
+      summary: Search trip
+      operationId: tripSearch
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripSearchRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TripSearchResponse'
+
+components:
+  schemas:
+
+    IRequest:
+      type: object
+      description: Базовый интерфейс для всех запросов
+      properties:
+        requestType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+      discriminator:
+        propertyName: requestType
+        mapping:
+          create: '#/components/schemas/TripCreateRequest'
+          read:   '#/components/schemas/TripReadRequest'
+          update: '#/components/schemas/TripUpdateRequest'
+          delete: '#/components/schemas/TripDeleteRequest'
+          search: '#/components/schemas/TripSearchRequest'
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        group:
+          type: string
+        field:
+          type: string
+        message:
+          type: string
+
+    ResponseResult:
+      type: string
+      enum:
+        - success
+        - error
+
+    IResponse:
+      type: object
+      description: Базовый интерфейс для всех ответов
+      properties:
+        responseType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+        result:
+          $ref: '#/components/schemas/ResponseResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+
+      discriminator:
+        propertyName: responseType
+        mapping:
+          create: '#/components/schemas/TripCreateResponse'
+          read:   '#/components/schemas/TripReadResponse'
+          update: '#/components/schemas/TripUpdateResponse'
+          delete: '#/components/schemas/TripDeleteResponse'
+          search: '#/components/schemas/TripSearchResponse'
+          init: '#/components/schemas/TripInitResponse'
+
+
+    UserId:
+      type: string
+      description: Идентификатор пользователя
+    TripId:
+      type: string
+      description: Идентификатор маршрута
+    TripLock:
+      type: string
+      description: Версия оптимистичной блокировки
+
+    BaseTrip:
+      type: object
+      description: Объект описывает свойства, одинаковые для create и update
+      properties:
+        name:
+          type: string
+          description: Имя маршрута
+        description:
+          type: string
+          description: Описание маршрута
+        TripType:
+          $ref: '#/components/schemas/Direction'
+
+    Direction:
+      type: string
+      description: 'Направление: прямое или обратное'
+      enum:
+        - forward
+        - reverse
+
+    TripInitResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+
+    TripCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseTrip'
+
+    TripCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/TripRequestDebug'
+        - type: object
+          properties:
+            trip:
+              $ref: '#/components/schemas/TripCreateObject'
+
+    TripReadObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/TripId'
+
+    TripReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/TripRequestDebug'
+        - type: object
+          properties:
+            trip:
+              $ref: '#/components/schemas/TripReadObject'
+
+    TripUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseTrip'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/TripId'
+            lock:
+              $ref: '#/components/schemas/TripLock'
+
+    TripUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/TripRequestDebug'
+        - type: object
+          properties:
+            trip:
+              $ref: '#/components/schemas/TripUpdateObject'
+
+    TripDeleteObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/TripId'
+            lock:
+              $ref: '#/components/schemas/TripLock'
+
+    TripDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/TripRequestDebug'
+        - type: object
+          properties:
+            trip:
+              $ref: '#/components/schemas/TripDeleteObject'
+
+    TripSearchFilter:
+      type: object
+      description: Набор фильтров для поиска
+      properties:
+        searchString:
+          type: string
+          description: Поисковая строка, которая будет искаться в маршрутах
+
+    TripSearchRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/TripRequestDebug'
+        - type: object
+          properties:
+            tripFilter:
+              $ref: '#/components/schemas/TripSearchFilter'
+
+    TripOffersObject:
+      $ref: '#/components/schemas/TripReadObject'
+
+    TripOffersRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/TripRequestDebug'
+        - type: object
+          properties:
+            trip:
+              $ref: '#/components/schemas/TripOffersObject'
+
+    TripResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseTrip'
+        - type: object
+          description: Объект, который возвращается в ответе бэкенда
+          properties:
+            id:
+              $ref: '#/components/schemas/TripId'
+            ownerId:
+              $ref: '#/components/schemas/UserId'
+            lock:
+              $ref: '#/components/schemas/TripLock'
+            permissions:
+              type: array
+              uniqueItems: true
+              items:
+                $ref: '#/components/schemas/TripPermissions'
+
+    TripPermissions:
+      type: string
+      description: Доступы для клиента для операций над маршрутами
+      enum:
+        - read
+        - update
+        - delete
+
+    TripResponseSingle:
+      allOf:
+        - type: object
+          description: Ответ с одним объектом маршрута
+          properties:
+            trip:
+              $ref: '#/components/schemas/TripResponseObject'
+
+    TripResponseMulti:
+      allOf:
+        - type: object
+          description: Список найденных объектов
+          properties:
+            trips:
+              type: array
+              items:
+                $ref: '#/components/schemas/TripResponseObject'
+
+    TripCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/TripResponseSingle'
+
+    TripReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/TripResponseSingle'
+
+    TripUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/TripResponseSingle'
+
+    TripDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/TripResponseSingle'
+
+    TripSearchResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/TripResponseMulti'
+
+    # STUBS ======================
+    TripRequestDebugMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+
+    TripRequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/TripDebug'
+
+    TripDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/TripRequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/TripRequestDebugStubs'
+
+    TripRequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - badId
+        - badName
+        - badDescription
+        - cannotDelete
+        - badSearchString
