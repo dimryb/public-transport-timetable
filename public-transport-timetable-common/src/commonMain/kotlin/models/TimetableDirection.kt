@@ -1,7 +1,7 @@
 package space.rybakov.timetable.common.models
 
-enum class TimetableDealSide {
+enum class TimetableDirection {
     NONE,
-    DEMAND,
-    SUPPLY,
+    FORWARD,
+    REVERSE,
 }
