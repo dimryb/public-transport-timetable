@@ -16,3 +16,4 @@ pluginManagement {
 //include("m1l1-hello")
 include("public-transport-timetable-acceptance")
 include("public-transport-timetable-api-v1-jackson")
+include("public-transport-timetable-common")
