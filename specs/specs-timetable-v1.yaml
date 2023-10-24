@@ -300,18 +300,6 @@ components:
             tripFilter:
               $ref: '#/components/schemas/TripSearchFilter'
 
-    TripOffersObject:
-      $ref: '#/components/schemas/TripReadObject'
-
-    TripOffersRequest:
-      allOf:
-        - $ref: '#/components/schemas/IRequest'
-        - $ref: '#/components/schemas/TripRequestDebug'
-        - type: object
-          properties:
-            trip:
-              $ref: '#/components/schemas/TripOffersObject'
-
     TripResponseObject:
       allOf:
         - $ref: '#/components/schemas/BaseTrip'
