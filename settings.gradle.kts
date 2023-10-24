@@ -17,3 +17,4 @@ pluginManagement {
 include("public-transport-timetable-acceptance")
 include("public-transport-timetable-api-v1-jackson")
 include("public-transport-timetable-common")
+include("public-transport-timetable-mappers-v1")
