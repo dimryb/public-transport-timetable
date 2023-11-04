@@ -16,6 +16,9 @@ plugins {
     kotlin("multiplatform")
     id("io.ktor.plugin")
 }
+dependencies {
+    implementation(project(mapOf("path" to ":public-transport-timetable-biz")))
+}
 
 repositories {
     maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap") }
@@ -42,8 +45,6 @@ kotlin {
         withJava()
     }
     linuxX64 {}
-    macosX64 {}
-    macosArm64 {}
 
     targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget> {
         binaries {
@@ -57,8 +58,6 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
-                implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
-
                 implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
                 implementation(ktor("cio")) // "io.ktor:ktor-server-cio:$ktorVersion"
                 implementation(ktor("auth")) // "io.ktor:ktor-server-auth:$ktorVersion"
@@ -75,7 +74,7 @@ kotlin {
                 //implementation(project(":public-transport-timetable-biz"))
 
                 // Stubs
-                //implementation(project(":ok-marketplace-stubs"))
+                //implementation(project(":public-transport-timetable-stubs"))
 
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
