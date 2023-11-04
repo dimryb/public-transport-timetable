@@ -18,6 +18,7 @@ plugins {
 }
 dependencies {
     implementation(project(mapOf("path" to ":public-transport-timetable-biz")))
+    implementation(project(mapOf("path" to ":public-transport-timetable-api-v1-jackson")))
 }
 
 repositories {
@@ -44,7 +45,7 @@ kotlin {
     jvm {
         withJava()
     }
-    linuxX64 {}
+    //linuxX64 {}
 
     targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget> {
         binaries {
@@ -71,14 +72,16 @@ kotlin {
                 implementation(ktor("auth")) // "io.ktor:ktor-auth:$ktorVersion"
 
                 implementation(project(":public-transport-timetable-common"))
-                //implementation(project(":public-transport-timetable-biz"))
+                implementation(project(":public-transport-timetable-biz"))
 
                 // Stubs
-                //implementation(project(":public-transport-timetable-stubs"))
+                implementation(project(":public-transport-timetable-stubs"))
 
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+
+                //implementation(project(":public-transport-timetable-api-v1-jackson"))
             }
         }
 
@@ -119,6 +122,8 @@ kotlin {
                 implementation(ktor("auth-jwt")) // "io.ktor:ktor-auth-jwt:$ktorVersion"
 
                 implementation("ch.qos.logback:logback-classic:$logbackVersion")
+
+                implementation(project(":public-transport-timetable-biz"))
 
                 // transport models
                 implementation(project(":public-transport-timetable-api-v1-jackson"))
