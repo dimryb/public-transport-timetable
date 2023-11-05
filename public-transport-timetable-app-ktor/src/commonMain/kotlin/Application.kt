@@ -8,7 +8,7 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import space.rybakov.timetable.api.v1.models.apiV1Mapper
-import space.rybakov.timetable.app.ktor.v2.v2Trip
+import space.rybakov.timetable.app.ktor.v1.v1Trip
 import space.rybakov.timetable.biz.TimetableTripProcessor
 
 fun Application.module(processor: TimetableTripProcessor = TimetableTripProcessor()) {
@@ -16,13 +16,6 @@ fun Application.module(processor: TimetableTripProcessor = TimetableTripProcesso
         get("/") {
             call.respondText("Hello, world!")
         }
-//        route("v2") {
-//            install(ContentNegotiation) {
-//                json(apiV1Mapper)
-//            }
-//
-//            v2Trip(processor)
-//        }
 
         route("v1") {
             install(ContentNegotiation) {
@@ -32,7 +25,7 @@ fun Application.module(processor: TimetableTripProcessor = TimetableTripProcesso
                 }
             }
 
-            v2Trip(processor)
+            v1Trip(processor)
         }
     }
 }

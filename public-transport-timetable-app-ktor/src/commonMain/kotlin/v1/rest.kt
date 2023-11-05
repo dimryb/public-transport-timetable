@@ -1,10 +1,10 @@
-package space.rybakov.timetable.app.ktor.v2
+package space.rybakov.timetable.app.ktor.v1
 
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 import space.rybakov.timetable.biz.TimetableTripProcessor
 
-fun Route.v2Trip(processor: TimetableTripProcessor) {
+fun Route.v1Trip(processor: TimetableTripProcessor) {
     route("trip") {
         post("create") {
             call.createTrip(processor)
