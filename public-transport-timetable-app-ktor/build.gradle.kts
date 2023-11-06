@@ -16,10 +16,6 @@ plugins {
     kotlin("multiplatform")
     id("io.ktor.plugin")
 }
-dependencies {
-    implementation(project(mapOf("path" to ":public-transport-timetable-biz")))
-    implementation(project(mapOf("path" to ":public-transport-timetable-api-v1-jackson")))
-}
 
 repositories {
     maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap") }
@@ -45,7 +41,9 @@ kotlin {
     jvm {
         withJava()
     }
-    //linuxX64 {}
+    linuxX64 {}
+    macosX64 {}
+    macosArm64 {}
 
     targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget> {
         binaries {
@@ -59,6 +57,8 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
+                implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
+
                 implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
                 implementation(ktor("cio")) // "io.ktor:ktor-server-cio:$ktorVersion"
                 implementation(ktor("auth")) // "io.ktor:ktor-server-auth:$ktorVersion"
@@ -74,14 +74,16 @@ kotlin {
                 implementation(project(":public-transport-timetable-common"))
                 implementation(project(":public-transport-timetable-biz"))
 
+                // v2 api
+                implementation(project(":public-transport-timetable-api-v2-kmp"))
+                implementation(project(":public-transport-timetable-mappers-v2"))
+
                 // Stubs
                 implementation(project(":public-transport-timetable-stubs"))
 
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
-
-                //implementation(project(":public-transport-timetable-api-v1-jackson"))
             }
         }
 
@@ -122,8 +124,6 @@ kotlin {
                 implementation(ktor("auth-jwt")) // "io.ktor:ktor-auth-jwt:$ktorVersion"
 
                 implementation("ch.qos.logback:logback-classic:$logbackVersion")
-
-                implementation(project(":public-transport-timetable-biz"))
 
                 // transport models
                 implementation(project(":public-transport-timetable-api-v1-jackson"))
