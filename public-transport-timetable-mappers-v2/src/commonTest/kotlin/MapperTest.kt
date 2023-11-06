@@ -1,10 +1,12 @@
-package space.rybakov.timetable.mappers.v2
+package ru.otus.otuskotlin.marketplace.mappers.v2
 
-import org.junit.Test
-import space.rybakov.timetable.api.v1.models.*
+import space.rybakov.timetable.api.v2.models.*
 import space.rybakov.timetable.common.TimetableContext
 import space.rybakov.timetable.common.models.*
 import space.rybakov.timetable.common.stubs.TimetableStubs
+import space.rybakov.timetable.mappers.v2.fromTransport
+import space.rybakov.timetable.mappers.v2.toTransportTrip
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class MapperTest {
@@ -19,7 +21,7 @@ class MapperTest {
             trip = TripCreateObject(
                 name = "name",
                 description = "desc",
-                tripType = Direction.REVERSE,
+                tripType = Direction.FORWARD,
             ),
         )
 
@@ -29,7 +31,7 @@ class MapperTest {
         assertEquals(TimetableStubs.SUCCESS, context.stubCase)
         assertEquals(TimetableWorkMode.STUB, context.workMode)
         assertEquals("name", context.tripRequest.name)
-        assertEquals(TimetableDirection.REVERSE, context.tripRequest.tripType)
+        assertEquals(TimetableDirection.FORWARD, context.tripRequest.tripType)
     }
 
     @Test
@@ -40,14 +42,14 @@ class MapperTest {
             tripResponse = TimetableTrip(
                 name = "name",
                 description = "desc",
-                tripType = TimetableDirection.REVERSE,
+                tripType = TimetableDirection.FORWARD,
             ),
             errors = mutableListOf(
                 TimetableError(
                     code = "err",
                     group = "request",
-                    field = "name",
-                    message = "wrong name",
+                    field = "title",
+                    message = "wrong title",
                 )
             ),
             state = TimetableState.RUNNING,
@@ -58,11 +60,11 @@ class MapperTest {
         assertEquals("1234", req.requestId)
         assertEquals("name", req.trip?.name)
         assertEquals("desc", req.trip?.description)
-        assertEquals(Direction.REVERSE, req.trip?.tripType)
+        assertEquals(Direction.FORWARD, req.trip?.tripType)
         assertEquals(1, req.errors?.size)
         assertEquals("err", req.errors?.firstOrNull()?.code)
         assertEquals("request", req.errors?.firstOrNull()?.group)
-        assertEquals("name", req.errors?.firstOrNull()?.field)
-        assertEquals("wrong name", req.errors?.firstOrNull()?.message)
+        assertEquals("title", req.errors?.firstOrNull()?.field)
+        assertEquals("wrong title", req.errors?.firstOrNull()?.message)
     }
 }

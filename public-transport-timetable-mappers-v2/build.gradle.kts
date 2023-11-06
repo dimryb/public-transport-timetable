@@ -7,13 +7,16 @@ version = rootProject.version
 
 kotlin {
     jvm {}
+    macosX64 {}
+    macosArm64 {}
+    linuxX64 {}
 
     sourceSets {
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
 
-                implementation(project(":public-transport-timetable-api-v1-jackson"))
+                implementation(project(":public-transport-timetable-api-v2-kmp"))
                 implementation(project(":public-transport-timetable-common"))
             }
         }
@@ -33,6 +36,6 @@ kotlin {
                 implementation(kotlin("test-junit"))
             }
         }
+
     }
 }
-

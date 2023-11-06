@@ -1,9 +1,9 @@
 package space.rybakov.timetable.mappers.v2
 
-import space.rybakov.timetable.api.v1.models.*
+import space.rybakov.timetable.api.v2.models.*
 import space.rybakov.timetable.common.TimetableContext
 import space.rybakov.timetable.common.models.*
-import space.rybakov.timetable.mappers.v1.exceptions.UnknownTimetableCommand
+import space.rybakov.timetable.mappers.v2.exceptions.UnknownTimetableCommand
 
 fun TimetableContext.toTransportTrip(): IResponse = when (val cmd = command) {
     TimetableCommand.CREATE -> toTransportCreate()

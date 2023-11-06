@@ -1,10 +1,10 @@
 package space.rybakov.timetable.mappers.v2
 
-import space.rybakov.timetable.api.v1.models.*
+import space.rybakov.timetable.mappers.v2.exceptions.UnknownRequestClass
+import space.rybakov.timetable.api.v2.models.*
 import space.rybakov.timetable.common.TimetableContext
 import space.rybakov.timetable.common.models.*
 import space.rybakov.timetable.common.stubs.TimetableStubs
-import space.rybakov.timetable.mappers.v1.exceptions.UnknownRequestClass
 
 fun TimetableContext.fromTransport(request: IRequest) = when (request) {
     is TripCreateRequest -> fromTransport(request)
@@ -12,12 +12,12 @@ fun TimetableContext.fromTransport(request: IRequest) = when (request) {
     is TripUpdateRequest -> fromTransport(request)
     is TripDeleteRequest -> fromTransport(request)
     is TripSearchRequest -> fromTransport(request)
-    else -> throw UnknownRequestClass(request.javaClass)
+    else -> throw UnknownRequestClass(request::class)
 }
 
 private fun String?.toTripId() = this?.let { TimetableTripId(it) } ?: TimetableTripId.NONE
 private fun String?.toTripWithId() = TimetableTrip(id = this.toTripId())
-private fun IRequest?.requestId() = this?.requestId?.let { TimetableRequestId(it) } ?: TimetableRequestId.NONE
+private fun IRequest?.requestId() = this?.requestId?.let { TimetableRequestId(it) } ?: space.rybakov.timetable.common.models.TimetableRequestId.NONE
 
 private fun TripDebug?.transportToWorkMode(): TimetableWorkMode = when (this?.mode) {
     TripRequestDebugMode.PROD -> TimetableWorkMode.PROD
