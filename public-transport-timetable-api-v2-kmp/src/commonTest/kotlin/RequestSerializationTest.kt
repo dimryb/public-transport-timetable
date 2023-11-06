@@ -48,12 +48,12 @@ class RequestSerializationTest {
             "requestType":"create",
             "requestId":"123",
             "debug":{"mode":"stub","stub":"badName"},
-            "trip":{"name":"trip name","description":"trip description","tripType":"forward","productId":null}
+            "trip":{"name":"trip name","description":"trip description","tripType":"forward"}
             }
         """.trimIndent()
         val obj = apiV2RequestDeserialize(jsonString) as IRequest
 
         assertEquals("123", obj.requestId)
-        //assertEquals(request, obj)
+        assertEquals(request, obj)
     }
 }

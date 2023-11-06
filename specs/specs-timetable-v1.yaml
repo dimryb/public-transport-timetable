@@ -203,7 +203,7 @@ components:
         description:
           type: string
           description: Описание маршрута
-        TripType:
+        tripType:
           $ref: '#/components/schemas/Direction'
 
     Direction:
