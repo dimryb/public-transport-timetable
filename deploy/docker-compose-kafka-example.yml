@@ -42,7 +42,7 @@ services:
       - "9101:9101"
 
   kafdrop:
-    image: obsidiandynamics/kafdrop:3.27.0
+    image: obsidiandynamics/kafdrop:3.31.0
     container_name: kafdrop-okkafkaex
     restart: "no"
     ports:
