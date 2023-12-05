@@ -2,9 +2,7 @@
 
 version: '3'
 services:
-  app-wiremock:
-    image: wiremock/wiremock:2.35.0
-    volumes:
-      - ./data:/home/wiremock
+  app-ktor:
+    image: public-transport-timetable-app-ktor-ktor:1.0-SNAPSHOT
     ports:
       - "8080:8080"

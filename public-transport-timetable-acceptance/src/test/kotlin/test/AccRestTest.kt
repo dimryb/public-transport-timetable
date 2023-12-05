@@ -1,7 +1,7 @@
 package space.rybakov.timetable.blackbox.test
 
 import io.kotest.core.annotation.Ignored
-import space.rybakov.timetable.blackbox.docker.WiremockDockerCompose
+import space.rybakov.timetable.blackbox.docker.KtorDockerCompose
 import space.rybakov.timetable.blackbox.fixture.BaseFunSpec
 import space.rybakov.timetable.blackbox.fixture.client.RestClient
 import space.rybakov.timetable.blackbox.fixture.docker.DockerCompose
@@ -12,6 +12,4 @@ open class AccRestTestBase(dockerCompose: DockerCompose) : BaseFunSpec(dockerCom
 
     testApiV1(client)
 })
-class AccRestWiremockTest : AccRestTestBase(WiremockDockerCompose)
-// TODO class AccRestSpringTest : AccRestTestBase(SpringDockerCompose)
-// TODO class AccRestKtorTest : AccRestTestBase(KtorDockerCompose)
+class AccRestKtorTest : AccRestTestBase(KtorDockerCompose)

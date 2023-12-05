@@ -10,7 +10,10 @@ dependencies {
     val logbackVersion: String by project
     val kotlinLoggingJvmVersion: String by project
 
-    testImplementation(kotlin("stdlib"))
+    implementation(kotlin("stdlib"))
+
+    implementation(project(":public-transport-timetable-api-v1-jackson"))
+    implementation(project(":public-transport-timetable-api-v2-kmp"))
 
     testImplementation("ch.qos.logback:logback-classic:$logbackVersion")
     testImplementation("io.github.microutils:kotlin-logging-jvm:$kotlinLoggingJvmVersion")
@@ -28,15 +31,12 @@ dependencies {
     testImplementation("io.ktor:ktor-client-okhttp-jvm:$ktorVersion")
 }
 
+var severity: String = "MINOR"
+
 tasks {
     withType<Test>().configureEach {
         useJUnitPlatform()
-    }
-    test {
-        systemProperty("kotest.framework.test.severity", "NORMAL")
-    }
-    create<Test>("test-strict") {
-        systemProperty("kotest.framework.test.severity", "MINOR")
-        group = "verification"
+        dependsOn(":public-transport-timetable-app-ktor:publishImageToLocalRegistry")
     }
 }
+
