@@ -6,7 +6,7 @@ kotlin {
     jvm {}
     macosX64 {}
     macosArm64 {}
-    linuxX64 {}
+    //linuxX64 {}
 
     sourceSets {
         val coroutinesVersion: String by project
