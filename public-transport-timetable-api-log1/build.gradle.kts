@@ -60,7 +60,7 @@ openApiGenerate {
     apiPackage.set("$openapiGroup.api")
     modelPackage.set("$openapiGroup.models")
     invokerPackage.set("$openapiGroup.invoker")
-    inputSpec.set("$rootDir/specs/specs-ad-log.yaml")
+    inputSpec.set("$rootDir/specs/specs-trip-log.yaml")
     library.set("multiplatform") // Используем библиотеку для KMP
 
     /**

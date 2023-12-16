@@ -1,6 +1,6 @@
 openapi: 3.0.4
 info:
-  title: Marketplace log models
+  title: Timetable log models
   description: Log models for logging services of marketplace
   license:
     name: Apache 2.0
@@ -22,13 +22,13 @@ components:
         source:
           type: string
         ad:
-          $ref: '#/components/schemas/MkplLogModel'
+          $ref: '#/components/schemas/TimetableLogModel'
         errors:
           type: array
           items:
             $ref: '#/components/schemas/ErrorLogModel'
 
-    MkplLogModel:
+    TimetableLogModel:
       title: Модель лога для микросервиса Marketplace
       type: object
       properties:
@@ -43,16 +43,16 @@ components:
             - delete
             - search
             - offers
-        requestAd:
-          $ref: '#/components/schemas/AdLog'
+        requestTrip:
+          $ref: '#/components/schemas/TripLog'
         requestFilter:
-          $ref: '#/components/schemas/AdFilterLog'
-        responseAd:
-          $ref: '#/components/schemas/AdLog'
-        responseAds:
+          $ref: '#/components/schemas/TripFilterLog'
+        responseTrip:
+          $ref: '#/components/schemas/TripLog'
+        responseTrips:
           type: array
           items:
-            $ref: '#/components/schemas/AdLog'
+            $ref: '#/components/schemas/TripLog'
 
     ErrorLogModel:
       title: Модель лога для ошибки
@@ -67,7 +67,7 @@ components:
         level:
           type: string
 
-    AdLog:
+    TripLog:
       title: Модель лога для объявления
       type: object
       properties:
@@ -91,7 +91,7 @@ components:
           items:
             type: string
 
-    AdFilterLog:
+    TripFilterLog:
       title: Модель лога фильтра
       properties:
         searchString:
