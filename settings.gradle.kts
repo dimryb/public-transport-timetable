@@ -35,3 +35,5 @@ include("public-transport-timetable-stubs")
 include("public-transport-timetable-kafka")
 
 include("public-transport-timetable-lib-logging-common")
+include("public-transport-timetable-lib-logging-kermit")
+include("public-transport-timetable-lib-logging-logback")
