@@ -33,6 +33,7 @@ include("public-transport-timetable-app-ktor")
 include("public-transport-timetable-biz")
 include("public-transport-timetable-stubs")
 include("public-transport-timetable-kafka")
+include("public-transport-timetable-lib-cor")
 
 include("public-transport-timetable-lib-logging-common")
 include("public-transport-timetable-lib-logging-kermit")
