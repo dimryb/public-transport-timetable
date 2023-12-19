@@ -1,13 +1,18 @@
 package space.rybakov.timetable.cor
 
-//import space.rybakov.timetable.cor.handlers.CorChain
-//import space.rybakov.timetable.cor.handlers.CorWorker
-//import space.rybakov.timetable.cor.handlers.executeSequential
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
+import space.rybakov.timetable.cor.handlers.CorChain
+import space.rybakov.timetable.cor.handlers.CorWorker
+import space.rybakov.timetable.cor.handlers.executeSequential
+import kotlin.js.JsName
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFails
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CorBaseTest {
-    /*@Test
+    @Test
     @JsName("worker_should_execute_handle")
     fun `worker should execute handle`() = runTest {
         val worker = CorWorker<TestContext>(
@@ -165,14 +170,13 @@ class CorBaseTest {
         val ctx = TestContext()
         chain.exec(ctx)
         println("Complete: $ctx")
-    }*/
+    }
 }
 
-/*
+
 private fun ICorChainDsl<TestContext>.printResult() = worker(title = "Print example") {
     println("some = $some")
 }
- */
 
 data class TestContext(
     var status: CorStatuses = CorStatuses.NONE,
