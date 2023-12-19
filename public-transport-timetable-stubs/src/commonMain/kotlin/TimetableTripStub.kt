@@ -1,13 +1,20 @@
 package space.rybakov.timetable.stubs
 
-import space.rybakov.timetable.common.models.TimetableTrip
-import space.rybakov.timetable.common.models.TimetableTripId
-import space.rybakov.timetable.common.models.TimetableDirection
-import space.rybakov.timetable.stubs.TimetableTripStubBolts.TRIP_DEMAND_11
-import space.rybakov.timetable.stubs.TimetableTripStubBolts.TRIP_SUPPLY_11
+import space.rybakov.timetable.common.models.*
 
 object TimetableTripStub {
-    fun get(): TimetableTrip = TRIP_DEMAND_11.copy()
+    fun get() = TimetableTrip(
+        id = TimetableTripId("666"),
+        name = "11",
+        description = "Муниципальный маршрут 11",
+        ownerId = TimetableUserId("user-1"),
+        tripType = TimetableDirection.FORWARD,
+        permissionsClient = mutableSetOf(
+            TimetableTripPermissionClient.READ,
+            TimetableTripPermissionClient.UPDATE,
+            TimetableTripPermissionClient.DELETE,
+        )
+    )
 
     fun prepareResult(block: TimetableTrip.() -> Unit): TimetableTrip = get().apply(block)
 
@@ -21,10 +28,10 @@ object TimetableTripStub {
     )
 
     private fun timetableTripDemand(id: String, filter: String, type: TimetableDirection) =
-        timetableTrip(TRIP_DEMAND_11, id = id, filter = filter, type = type)
+        timetableTrip(get(), id = id, filter = filter, type = type)
 
     private fun timetableTripSupply(id: String, filter: String, type: TimetableDirection) =
-        timetableTrip(TRIP_SUPPLY_11, id = id, filter = filter, type = type)
+        timetableTrip(get(), id = id, filter = filter, type = type)
 
     private fun timetableTrip(base: TimetableTrip, id: String, filter: String, type: TimetableDirection) = base.copy(
         id = TimetableTripId(id),

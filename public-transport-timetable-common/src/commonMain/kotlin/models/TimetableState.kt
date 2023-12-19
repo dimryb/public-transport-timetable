@@ -4,4 +4,5 @@ enum class TimetableState {
     NONE,
     RUNNING,
     FAILING,
+    FINISHING,
 }
