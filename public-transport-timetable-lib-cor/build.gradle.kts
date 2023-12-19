@@ -3,10 +3,10 @@ plugins {
 }
 
 kotlin {
-    js(IR) {
-        browser()
-        nodejs()
-    }
+//    js(IR) {
+//        browser()
+//        nodejs()
+//    }
     jvm { }
     macosX64 {}
     macosArm64 {}
@@ -30,18 +30,18 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
             }
         }
-        @Suppress("UNUSED_VARIABLE")
-        val jsMain by getting {
-            dependencies {
-                implementation(kotlin("stdlib-js"))
-            }
-        }
-        @Suppress("UNUSED_VARIABLE")
-        val jsTest by getting {
-            dependencies {
-                implementation(kotlin("test-js"))
-            }
-        }
+//        @Suppress("UNUSED_VARIABLE")
+//        val jsMain by getting {
+//            dependencies {
+//                implementation(kotlin("stdlib-js"))
+//            }
+//        }
+//        @Suppress("UNUSED_VARIABLE")
+//        val jsTest by getting {
+//            dependencies {
+//                implementation(kotlin("test-js"))
+//            }
+//        }
         @Suppress("UNUSED_VARIABLE")
         val jvmMain by getting {
             dependencies {
