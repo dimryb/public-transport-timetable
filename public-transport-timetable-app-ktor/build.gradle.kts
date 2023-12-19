@@ -128,6 +128,9 @@ kotlin {
                 // transport models
                 implementation(project(":public-transport-timetable-api-v1-jackson"))
                 implementation(project(":public-transport-timetable-mappers-v1"))
+
+                implementation("com.sndyuk:logback-more-appenders:1.8.8")
+                implementation("org.fluentd:fluent-logger:0.3.4")
             }
         }
 
