@@ -17,7 +17,7 @@ fun TimetableContext.toTransportTrip(): IResponse = when (val cmd = command) {
 fun TimetableContext.toTransportCreate() = TripCreateResponse(
     responseType = "create",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == TimetableState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == TimetableState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     trip = tripResponse.toTransportTrip()
 )
@@ -25,7 +25,7 @@ fun TimetableContext.toTransportCreate() = TripCreateResponse(
 fun TimetableContext.toTransportRead() = TripReadResponse(
     responseType = "read",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == TimetableState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == TimetableState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     trip = tripResponse.toTransportTrip()
 )
@@ -33,7 +33,7 @@ fun TimetableContext.toTransportRead() = TripReadResponse(
 fun TimetableContext.toTransportUpdate() = TripUpdateResponse(
     responseType = "update",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == TimetableState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == TimetableState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     trip = tripResponse.toTransportTrip()
 )
@@ -41,7 +41,7 @@ fun TimetableContext.toTransportUpdate() = TripUpdateResponse(
 fun TimetableContext.toTransportDelete() = TripDeleteResponse(
     responseType = "delete",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == TimetableState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == TimetableState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     trip = tripResponse.toTransportTrip()
 )
@@ -49,7 +49,7 @@ fun TimetableContext.toTransportDelete() = TripDeleteResponse(
 fun TimetableContext.toTransportSearch() = TripSearchResponse(
     responseType = "search",
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == TimetableState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == TimetableState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     trips = tripsResponse.toTransportTrip()
 )
