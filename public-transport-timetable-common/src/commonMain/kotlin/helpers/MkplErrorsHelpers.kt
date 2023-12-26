@@ -2,6 +2,7 @@ package space.rybakov.timetable.common.helpers
 
 import space.rybakov.timetable.common.TimetableContext
 import space.rybakov.timetable.common.models.TimetableError
+import space.rybakov.timetable.common.models.TimetableState
 
 fun Throwable.asTimetableError(
     code: String = "unknown",
@@ -16,3 +17,8 @@ fun Throwable.asTimetableError(
 )
 
 fun TimetableContext.addError(vararg error: TimetableError) = errors.addAll(error)
+
+fun TimetableContext.fail(error: TimetableError) {
+    addError(error)
+    state = TimetableState.FAILING
+}

@@ -59,7 +59,7 @@ class KafkaControllerTest {
         assertEquals(outputTopic, message.topic())
         assertEquals("123456", result.requestId)
         assertEquals("11", result.trip?.name)
-        assertEquals("Муниципальный маршрут 11", result.trip?.description)
+        assertEquals("Маршрут 11", result.trip?.description)
     }
 
     companion object {

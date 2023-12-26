@@ -20,6 +20,7 @@ kotlin {
 
                 implementation(project(":public-transport-timetable-common"))
                 implementation(project(":public-transport-timetable-stubs"))
+                implementation(project(":public-transport-timetable-lib-cor"))
             }
         }
         @Suppress("UNUSED_VARIABLE")

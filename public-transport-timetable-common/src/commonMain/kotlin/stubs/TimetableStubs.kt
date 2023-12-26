@@ -9,4 +9,5 @@ enum class TimetableStubs {
     BAD_DESCRIPTION,
     CANNOT_DELETE,
     BAD_SEARCH_STRING,
+    DB_ERROR,
 }
