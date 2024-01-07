@@ -22,3 +22,20 @@ fun TimetableContext.fail(error: TimetableError) {
     addError(error)
     state = TimetableState.FAILING
 }
+
+fun errorAdministration(
+    /**
+     * Код, характеризующий ошибку. Не должен включать имя поля или указание на валидацию.
+     * Например: empty, badSymbols, tooLong, etc
+     */
+    field: String = "",
+    violationCode: String,
+    description: String,
+    level: TimetableError.Level = TimetableError.Level.ERROR,
+) = TimetableError(
+    field = field,
+    code = "administration-$violationCode",
+    group = "administration",
+    message = "Microservice management error: $description",
+    level = level,
+)

@@ -2,6 +2,7 @@ package space.rybakov.timetable.common
 
 import kotlinx.datetime.Instant
 import space.rybakov.timetable.common.models.*
+import space.rybakov.timetable.common.repo.ITripRepository
 import space.rybakov.timetable.common.stubs.TimetableStubs
 
 data class TimetableContext(
@@ -11,6 +12,12 @@ data class TimetableContext(
 
     var workMode: TimetableWorkMode = TimetableWorkMode.PROD,
     var stubCase: TimetableStubs = TimetableStubs.NONE,
+
+    var adRepo: ITripRepository = ITripRepository.NONE,
+    var adRepoRead: TimetableTrip = TimetableTrip(),
+    var adRepoPrepare: TimetableTrip = TimetableTrip(),
+    var adRepoDone: TimetableTrip = TimetableTrip(),
+    var adsRepoDone: MutableList<TimetableTrip> = mutableListOf(),
 
     var requestId: TimetableRequestId = TimetableRequestId.NONE,
     var timeStart: Instant = Instant.NONE,
