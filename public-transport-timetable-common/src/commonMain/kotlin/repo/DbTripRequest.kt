@@ -3,5 +3,5 @@ package space.rybakov.timetable.common.repo
 import space.rybakov.timetable.common.models.TimetableTrip
 
 data class DbTripRequest(
-    val ad: TimetableTrip
+    val trip: TimetableTrip
 )

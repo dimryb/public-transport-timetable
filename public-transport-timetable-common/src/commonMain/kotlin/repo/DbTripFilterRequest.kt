@@ -6,5 +6,5 @@ import space.rybakov.timetable.common.models.TimetableUserId
 data class DbTripFilterRequest(
     val titleFilter: String = "",
     val ownerId: TimetableUserId = TimetableUserId.NONE,
-    val dealSide: TimetableDirection = TimetableDirection.NONE,
+    val direction: TimetableDirection = TimetableDirection.NONE,
 )
