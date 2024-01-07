@@ -23,7 +23,7 @@ kotlin {
                 implementation("io.github.reactivecircus.cache4k:cache4k:$cache4kVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
                 implementation("com.benasher44:uuid:$kmpUUIDVersion")
-                //implementation(project(":public-transport-timeteble-repo-tests"))
+                implementation(project(":public-transport-timetable-repo-tests"))
 
             }
         }

@@ -38,4 +38,6 @@ include("public-transport-timetable-lib-cor")
 include("public-transport-timetable-lib-logging-common")
 include("public-transport-timetable-lib-logging-kermit")
 include("public-transport-timetable-lib-logging-logback")
+
 include("public-transport-timetable-repo-in-memory")
+include("public-transport-timetable-repo-tests")
