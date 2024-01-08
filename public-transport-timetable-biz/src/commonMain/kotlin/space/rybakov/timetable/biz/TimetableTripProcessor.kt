@@ -4,11 +4,14 @@ import space.rybakov.timetable.biz.groups.operation
 import space.rybakov.timetable.biz.groups.stubs
 import space.rybakov.timetable.biz.workers.*
 import space.rybakov.timetable.common.TimetableContext
+import space.rybakov.timetable.common.TimetableCorSettings
 import space.rybakov.timetable.common.models.TimetableCommand
 import space.rybakov.timetable.cor.rootChain
 
-class TimetableTripProcessor {
-    suspend fun exec(ctx: TimetableContext) = BusinessChain.exec(ctx)
+class TimetableTripProcessor(val settings: TimetableCorSettings = TimetableCorSettings()) {
+    suspend fun exec(ctx: TimetableContext) =
+        BusinessChain.exec(ctx.apply { this.settings = this@TimetableTripProcessor.settings })
+
 
     companion object {
         private val BusinessChain = rootChain<TimetableContext> {

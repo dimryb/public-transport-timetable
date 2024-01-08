@@ -7,11 +7,14 @@ import io.ktor.server.engine.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import ru.otus.otuskotlin.marketplace.app.plugins.initPlugins
 import space.rybakov.timetable.api.v2.apiV2Mapper
+import space.rybakov.timetable.app.common.TimetableAppSettings
 import space.rybakov.timetable.app.ktor.v2.v2Trip
-import space.rybakov.timetable.biz.TimetableTripProcessor
+import space.rybakov.timetable.app.plugins.initAppSettings
 
-fun Application.module(processor: TimetableTripProcessor = TimetableTripProcessor()) {
+fun Application.module(appSettings: TimetableAppSettings = initAppSettings()) {
+    initPlugins(appSettings)
     routing {
         get("/") {
             call.respondText("Hello, world!")
@@ -22,13 +25,11 @@ fun Application.module(processor: TimetableTripProcessor = TimetableTripProcesso
                 json(apiV2Mapper)
             }
 
-            v2Trip(processor)
+            v2Trip(appSettings)
         }
     }
 }
 
 fun main() {
-    embeddedServer(CIO, port = 8080) {
-        module()
-    }.start(wait = true)
+    embeddedServer(CIO, port = 8080, module = Application::module).start(wait = true)
 }

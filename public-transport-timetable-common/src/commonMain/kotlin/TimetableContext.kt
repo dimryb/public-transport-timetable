@@ -9,6 +9,7 @@ data class TimetableContext(
     var command: TimetableCommand = TimetableCommand.NONE,
     var state: TimetableState = TimetableState.NONE,
     val errors: MutableList<TimetableError> = mutableListOf(),
+    var settings: TimetableCorSettings = TimetableCorSettings.NONE,
 
     var workMode: TimetableWorkMode = TimetableWorkMode.PROD,
     var stubCase: TimetableStubs = TimetableStubs.NONE,

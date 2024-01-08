@@ -57,6 +57,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
+                implementation(project(":public-transport-timetable-app-common"))
                 implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
 
                 implementation(ktor("core")) // "io.ktor:ktor-server-core:$ktorVersion"
@@ -84,6 +85,9 @@ kotlin {
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+
+                implementation(project(":public-transport-timetable-repo-in-memory"))
+                implementation(project(":public-transport-timetable-repo-stubs"))
             }
         }
 
@@ -96,6 +100,9 @@ kotlin {
                 implementation(ktor("test-host"))
                 implementation(ktor("content-negotiation", prefix = "client-"))
                 implementation(ktor("websockets", prefix = "client-"))
+
+                implementation(project(":public-transport-timetable-repo-in-memory"))
+                implementation(project(":public-transport-timetable-repo-stubs"))
             }
         }
 
