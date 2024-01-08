@@ -41,3 +41,4 @@ include("public-transport-timetable-lib-logging-logback")
 
 include("public-transport-timetable-repo-in-memory")
 include("public-transport-timetable-repo-tests")
+include("public-transport-timetable-repo-stubs")
