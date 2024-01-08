@@ -5,7 +5,7 @@ import io.ktor.server.routing.*
 import space.rybakov.timetable.app.common.TimetableAppSettings
 
 fun Route.v1Trip(appSettings: TimetableAppSettings) {
-    route("ad") {
+    route("trip") {
         post("create") {
             call.createTrip(appSettings)
         }
