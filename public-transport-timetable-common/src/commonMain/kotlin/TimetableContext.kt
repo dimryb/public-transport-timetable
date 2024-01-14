@@ -14,16 +14,23 @@ data class TimetableContext(
     var workMode: TimetableWorkMode = TimetableWorkMode.PROD,
     var stubCase: TimetableStubs = TimetableStubs.NONE,
 
-    var adRepo: ITripRepository = ITripRepository.NONE,
-    var adRepoRead: TimetableTrip = TimetableTrip(),
-    var adRepoPrepare: TimetableTrip = TimetableTrip(),
-    var adRepoDone: TimetableTrip = TimetableTrip(),
-    var adsRepoDone: MutableList<TimetableTrip> = mutableListOf(),
+    var tripRepo: ITripRepository = ITripRepository.NONE,
+    var tripRepoRead: TimetableTrip = TimetableTrip(),
+    var tripRepoPrepare: TimetableTrip = TimetableTrip(),
+    var tripRepoDone: TimetableTrip = TimetableTrip(),
+    var tripsRepoDone: MutableList<TimetableTrip> = mutableListOf(),
 
     var requestId: TimetableRequestId = TimetableRequestId.NONE,
     var timeStart: Instant = Instant.NONE,
     var tripRequest: TimetableTrip = TimetableTrip(),
     var tripFilterRequest: TimetableTripFilter = TimetableTripFilter(),
+
+    var tripValidating: TimetableTrip = TimetableTrip(),
+    var tripFilterValidating: TimetableTripFilter = TimetableTripFilter(),
+
+    var tripValidated: TimetableTrip = TimetableTrip(),
+    var tripFilterValidated: TimetableTripFilter = TimetableTripFilter(),
+
     var tripResponse: TimetableTrip = TimetableTrip(),
     var tripsResponse: MutableList<TimetableTrip> = mutableListOf(),
 )

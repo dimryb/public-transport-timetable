@@ -1,7 +1,7 @@
 package space.rybakov.timetable.biz
 
-import space.rybakov.timetable.biz.groups.operation
-import space.rybakov.timetable.biz.groups.stubs
+import space.rybakov.timetable.biz.general.operation
+import space.rybakov.timetable.biz.general.stubs
 import space.rybakov.timetable.biz.workers.*
 import space.rybakov.timetable.common.TimetableContext
 import space.rybakov.timetable.common.TimetableCorSettings
