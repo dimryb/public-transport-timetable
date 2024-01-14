@@ -7,7 +7,7 @@ import space.rybakov.timetable.cor.ICorChainDsl
 import space.rybakov.timetable.cor.worker
 
 // TODO-validation-4: смотрим пример COR DSL валидации
-fun ICorChainDsl<TimetableContext>.validateTitleNotEmpty(title: String) = worker {
+fun ICorChainDsl<TimetableContext>.validateNameNotEmpty(title: String) = worker {
     this.title = title
     on { tripValidating.name.isEmpty() }
     handle {

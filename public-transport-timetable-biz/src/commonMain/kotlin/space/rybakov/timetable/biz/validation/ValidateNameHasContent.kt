@@ -6,7 +6,7 @@ import space.rybakov.timetable.common.helpers.fail
 import space.rybakov.timetable.cor.ICorChainDsl
 import space.rybakov.timetable.cor.worker
 
-fun ICorChainDsl<TimetableContext>.validateTitleHasContent(title: String) = worker {
+fun ICorChainDsl<TimetableContext>.validateNameHasContent(title: String) = worker {
     this.title = title
     val regExp = Regex("\\p{L}")
     on { tripValidating.name.isNotEmpty() && !tripValidating.name.contains(regExp) }
