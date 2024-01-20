@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.marketplace.api.logs.mapper
+package space.rybakov.timetable.api.logs.mapper
 
 import kotlinx.datetime.Clock
 import space.rybakov.timetable.api.logs.models.*

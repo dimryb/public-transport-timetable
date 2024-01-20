@@ -1,7 +1,7 @@
 package space.rybakov.timetable.app.common
 
 import kotlinx.datetime.Clock
-import ru.otus.otuskotlin.marketplace.api.logs.mapper.toLog
+import space.rybakov.timetable.api.logs.mapper.toLog
 import space.rybakov.timetable.biz.TimetableTripProcessor
 import space.rybakov.timetable.common.TimetableContext
 import space.rybakov.timetable.common.helpers.asTimetableError
@@ -13,7 +13,8 @@ suspend fun <T> TimetableTripProcessor.process(
     logger: ITtLogWrapper,
     logId: String,
     fromTransport: suspend TimetableContext.() -> Unit,
-    sendResponse: suspend TimetableContext.() -> T): T {
+    sendResponse: suspend TimetableContext.() -> T
+): T {
     var command = TimetableCommand.NONE
     return try {
         val ctx = TimetableContext(
