@@ -1,5 +1,5 @@
 
-import ru.otus.otuskotlin.marketplace.api.logs.mapper.toLog
+import space.rybakov.timetable.api.logs.mapper.toLog
 import space.rybakov.timetable.common.TimetableContext
 import space.rybakov.timetable.common.models.*
 import kotlin.test.Test
