@@ -1,8 +1,10 @@
 package space.rybakov.timetable.common.helpers
 
 import space.rybakov.timetable.common.TimetableContext
+import space.rybakov.timetable.common.exceptions.RepoConcurrencyException
 import space.rybakov.timetable.common.models.TimetableError
 import space.rybakov.timetable.common.models.TimetableState
+import space.rybakov.timetable.common.models.TimetableTripLock
 
 fun Throwable.asTimetableError(
     code: String = "unknown",
@@ -48,6 +50,7 @@ fun errorAdministration(
     field: String = "",
     violationCode: String,
     description: String,
+    exception: Exception? = null,
     level: TimetableError.Level = TimetableError.Level.ERROR,
 ) = TimetableError(
     field = field,
@@ -55,4 +58,17 @@ fun errorAdministration(
     group = "administration",
     message = "Microservice management error: $description",
     level = level,
+    exception = exception,
+)
+
+fun errorRepoConcurrency(
+    expectedLock: TimetableTripLock,
+    actualLock: TimetableTripLock?,
+    exception: Exception? = null,
+) = TimetableError(
+    field = "lock",
+    code = "concurrency",
+    group = "repo",
+    message = "The object has been changed concurrently by another user or process",
+    exception = exception ?: RepoConcurrencyException(expectedLock, actualLock),
 )

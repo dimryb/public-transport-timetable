@@ -2,7 +2,10 @@ package space.rybakov.timetable.repo.inmemory
 
 import com.benasher44.uuid.uuid4
 import io.github.reactivecircus.cache4k.Cache
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import space.rybakov.timetable.backend.repository.inmemory.model.TripEntity
+import space.rybakov.timetable.common.helpers.errorRepoConcurrency
 import space.rybakov.timetable.common.models.*
 import space.rybakov.timetable.common.repo.*
 import kotlin.time.Duration
@@ -17,6 +20,7 @@ class TripRepoInMemory(
     private val cache = Cache.Builder<String, TripEntity>()
         .expireAfterWrite(ttl)
         .build()
+    private val mutex: Mutex = Mutex()
 
     init {
         initObjects.forEach {
@@ -34,7 +38,7 @@ class TripRepoInMemory(
 
     override suspend fun createTrip(rq: DbTripRequest): DbTripResponse {
         val key = randomUuid()
-        val trip = rq.trip.copy(id = TimetableTripId(key))
+        val trip = rq.trip.copy(id = TimetableTripId(key), lock = TimetableTripLock(randomUuid()))
         val entity = TripEntity(trip)
         cache.put(key, entity)
         return DbTripResponse(
@@ -56,30 +60,50 @@ class TripRepoInMemory(
 
     override suspend fun updateTrip(rq: DbTripRequest): DbTripResponse {
         val key = rq.trip.id.takeIf { it != TimetableTripId.NONE }?.asString() ?: return resultErrorEmptyId
-        val newTrip = rq.trip.copy()
+        val oldLock = rq.trip.lock.takeIf { it != TimetableTripLock.NONE }?.asString() ?: return resultErrorEmptyLock
+        val newTrip = rq.trip.copy(lock = TimetableTripLock(randomUuid()))
         val entity = TripEntity(newTrip)
-        return when (cache.get(key)) {
-            null -> resultErrorNotFound
-            else -> {
-                cache.put(key, entity)
-                DbTripResponse(
-                    data = newTrip,
-                    isSuccess = true,
+        return mutex.withLock {
+            val oldTrip = cache.get(key)
+            when {
+                oldTrip == null -> resultErrorNotFound
+                oldTrip.lock != oldLock -> DbTripResponse(
+                    data = oldTrip.toInternal(),
+                    isSuccess = false,
+                    errors = listOf(errorRepoConcurrency(TimetableTripLock(oldLock), oldTrip.lock?.let { TimetableTripLock(it) }))
                 )
+
+                else -> {
+                    cache.put(key, entity)
+                    DbTripResponse(
+                        data = newTrip,
+                        isSuccess = true,
+                    )
+                }
             }
         }
     }
 
     override suspend fun deleteTrip(rq: DbTripIdRequest): DbTripResponse {
         val key = rq.id.takeIf { it != TimetableTripId.NONE }?.asString() ?: return resultErrorEmptyId
-        return when (val oldTrip = cache.get(key)) {
-            null -> resultErrorNotFound
-            else -> {
-                cache.invalidate(key)
-                DbTripResponse(
+        val oldLock = rq.lock.takeIf { it != TimetableTripLock.NONE }?.asString() ?: return resultErrorEmptyLock
+        return mutex.withLock {
+            val oldTrip = cache.get(key)
+            when {
+                oldTrip == null -> resultErrorNotFound
+                oldTrip.lock != oldLock -> DbTripResponse(
                     data = oldTrip.toInternal(),
-                    isSuccess = true,
+                    isSuccess = false,
+                    errors = listOf(errorRepoConcurrency(TimetableTripLock(oldLock), oldTrip.lock?.let { TimetableTripLock(it) }))
                 )
+
+                else -> {
+                    cache.invalidate(key)
+                    DbTripResponse(
+                        data = oldTrip.toInternal(),
+                        isSuccess = true,
+                    )
+                }
             }
         }
     }
@@ -119,6 +143,18 @@ class TripRepoInMemory(
                     group = "validation",
                     field = "id",
                     message = "Id must not be null or blank"
+                )
+            )
+        )
+        val resultErrorEmptyLock = DbTripResponse(
+            data = null,
+            isSuccess = false,
+            errors = listOf(
+                TimetableError(
+                    code = "lock-empty",
+                    group = "validation",
+                    field = "lock",
+                    message = "Lock must not be null or blank"
                 )
             )
         )

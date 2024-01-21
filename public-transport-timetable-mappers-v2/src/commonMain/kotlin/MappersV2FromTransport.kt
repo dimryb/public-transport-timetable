@@ -1,10 +1,10 @@
 package space.rybakov.timetable.mappers.v2
 
-import space.rybakov.timetable.mappers.v2.exceptions.UnknownRequestClass
 import space.rybakov.timetable.api.v2.models.*
 import space.rybakov.timetable.common.TimetableContext
 import space.rybakov.timetable.common.models.*
 import space.rybakov.timetable.common.stubs.TimetableStubs
+import space.rybakov.timetable.mappers.v2.exceptions.UnknownRequestClass
 
 fun TimetableContext.fromTransport(request: IRequest) = when (request) {
     is TripCreateRequest -> fromTransport(request)
@@ -16,6 +16,13 @@ fun TimetableContext.fromTransport(request: IRequest) = when (request) {
 }
 
 private fun String?.toTripId() = this?.let { TimetableTripId(it) } ?: TimetableTripId.NONE
+
+private fun String?.toTripLock() = this?.let { TimetableTripLock(it) } ?: TimetableTripLock.NONE
+private fun TripReadObject?.toInternal() = if (this != null) {
+    TimetableTrip(id = id.toTripId())
+} else {
+    TimetableTrip.NONE
+}
 private fun String?.toTripWithId() = TimetableTrip(id = this.toTripId())
 private fun IRequest?.requestId() = this?.requestId?.let { TimetableRequestId(it) } ?: space.rybakov.timetable.common.models.TimetableRequestId.NONE
 
@@ -48,7 +55,7 @@ fun TimetableContext.fromTransport(request: TripCreateRequest) {
 fun TimetableContext.fromTransport(request: TripReadRequest) {
     command = TimetableCommand.READ
     requestId = request.requestId()
-    tripRequest = request.trip?.id.toTripWithId()
+    tripRequest = request.trip.toInternal()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }
@@ -64,9 +71,18 @@ fun TimetableContext.fromTransport(request: TripUpdateRequest) {
 fun TimetableContext.fromTransport(request: TripDeleteRequest) {
     command = TimetableCommand.DELETE
     requestId = request.requestId()
-    tripRequest = request.trip?.id.toTripWithId()
+    tripRequest = request.trip.toInternal()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
+}
+
+private fun TripDeleteObject?.toInternal(): TimetableTrip = if (this != null) {
+    TimetableTrip(
+        id = id.toTripId(),
+        lock = lock.toTripLock(),
+    )
+} else {
+    TimetableTrip.NONE
 }
 
 fun TimetableContext.fromTransport(request: TripSearchRequest) {
@@ -92,6 +108,7 @@ private fun TripUpdateObject.toInternal(): TimetableTrip = TimetableTrip(
     name = this.name ?: "",
     description = this.description ?: "",
     tripType = this.tripType.fromTransport(),
+    lock = this.lock.toTripLock(),
 )
 
 private fun Direction?.fromTransport(): TimetableDirection = when (this) {

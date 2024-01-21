@@ -72,6 +72,7 @@ private fun TimetableTrip.toTransportTrip(): TripResponseObject = TripResponseOb
     ownerId = ownerId.takeIf { it != TimetableUserId.NONE }?.asString(),
     tripType = tripType.toTransportTrip(),
     permissions = permissionsClient.toTransportTrip(),
+    lock = lock.takeIf { it != TimetableTripLock.NONE }?.asString()
 )
 
 private fun Set<TimetableTripPermissionClient>.toTransportTrip(): Set<TripPermissions>? = this

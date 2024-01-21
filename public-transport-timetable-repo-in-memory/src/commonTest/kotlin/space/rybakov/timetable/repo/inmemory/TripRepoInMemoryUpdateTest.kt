@@ -6,5 +6,6 @@ import space.rybakov.timetable.common.repo.ITripRepository
 class TripRepoInMemoryUpdateTest : RepoTripUpdateTest() {
     override val repo: ITripRepository = TripRepoInMemory(
         initObjects = initObjects,
+        randomUuid = { lockNew.asString() }
     )
 }

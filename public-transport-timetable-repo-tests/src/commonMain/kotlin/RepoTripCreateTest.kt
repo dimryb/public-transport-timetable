@@ -1,10 +1,7 @@
 package space.rybakov.timetable.backend.repo.tests
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import space.rybakov.timetable.common.models.TimetableDirection
-import space.rybakov.timetable.common.models.TimetableTrip
-import space.rybakov.timetable.common.models.TimetableTripId
-import space.rybakov.timetable.common.models.TimetableUserId
+import space.rybakov.timetable.common.models.*
 import space.rybakov.timetable.common.repo.DbTripRequest
 import space.rybakov.timetable.common.repo.ITripRepository
 import kotlin.test.Test
@@ -15,6 +12,8 @@ import kotlin.test.assertNotEquals
 @OptIn(ExperimentalCoroutinesApi::class)
 abstract class RepoTripCreateTest {
     abstract val repo: ITripRepository
+
+    protected open val lockNew: TimetableTripLock = TimetableTripLock("20000000-0000-0000-0000-000000000002")
 
     private val createObj = TimetableTrip(
         name = "create object",
@@ -33,6 +32,7 @@ abstract class RepoTripCreateTest {
         assertEquals(expected.tripType, result.data?.tripType)
         assertNotEquals(TimetableTripId.NONE, result.data?.id)
         assertEquals(emptyList(), result.errors)
+        assertEquals(lockNew, result.data?.lock)
     }
 
     companion object : BaseInitTrips("create") {

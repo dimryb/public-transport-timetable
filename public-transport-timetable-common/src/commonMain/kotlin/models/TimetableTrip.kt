@@ -12,4 +12,10 @@ data class TimetableTrip(
     fun deepCopy(): TimetableTrip = copy(
         permissionsClient = permissionsClient.toMutableSet(),
     )
+
+    fun isEmpty() = this == NONE
+
+    companion object {
+        val NONE = TimetableTrip()
+    }
 }
