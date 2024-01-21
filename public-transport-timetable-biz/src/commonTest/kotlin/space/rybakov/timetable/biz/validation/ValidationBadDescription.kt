@@ -21,6 +21,7 @@ fun validationDescriptionCorrect(command: TimetableCommand, processor: Timetable
             name = "abc",
             description = "abc",
             tripType = TimetableDirection.FORWARD,
+            lock = TimetableTripLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -40,6 +41,7 @@ fun validationDescriptionTrim(command: TimetableCommand, processor: TimetableTri
             name = "abc",
             description = " \n\tabc \n\t",
             tripType = TimetableDirection.FORWARD,
+            lock = TimetableTripLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -59,6 +61,7 @@ fun validationDescriptionEmpty(command: TimetableCommand, processor: TimetableTr
             name = "abc",
             description = "",
             tripType = TimetableDirection.FORWARD,
+            lock = TimetableTripLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -80,6 +83,7 @@ fun validationDescriptionSymbols(command: TimetableCommand, processor: Timetable
             name = "abc",
             description = "!@#$%^&*(),.{}",
             tripType = TimetableDirection.FORWARD,
+            lock = TimetableTripLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)

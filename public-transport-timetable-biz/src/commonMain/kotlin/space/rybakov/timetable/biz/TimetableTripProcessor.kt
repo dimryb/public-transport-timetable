@@ -12,6 +12,7 @@ import space.rybakov.timetable.common.TimetableCorSettings
 import space.rybakov.timetable.common.models.TimetableCommand
 import space.rybakov.timetable.common.models.TimetableState
 import space.rybakov.timetable.common.models.TimetableTripId
+import space.rybakov.timetable.common.models.TimetableTripLock
 import space.rybakov.timetable.cor.chain
 import space.rybakov.timetable.cor.rootChain
 import space.rybakov.timetable.cor.worker
@@ -89,10 +90,13 @@ class TimetableTripProcessor(val settings: TimetableCorSettings = TimetableCorSe
                 validation {
                     worker("Копируем поля в tripValidating") { tripValidating = tripRequest.deepCopy() }
                     worker("Очистка id") { tripValidating.id = TimetableTripId(tripValidating.id.asString().trim()) }
+                    worker("Очистка lock") { tripValidating.lock = TimetableTripLock(tripValidating.lock.asString().trim()) }
                     worker("Очистка имени") { tripValidating.name = tripValidating.name.trim() }
                     worker("Очистка описания") { tripValidating.description = tripValidating.description.trim() }
                     validateIdNotEmpty("Проверка на непустой id")
                     validateIdProperFormat("Проверка формата id")
+                    validateLockNotEmpty("Проверка на непустой lock")
+                    validateLockProperFormat("Проверка формата lock")
                     validateNameNotEmpty("Проверка на непустой заголовок")
                     validateNameHasContent("Проверка на наличие содержания в заголовке")
                     validateDescriptionNotEmpty("Проверка на непустое описание")
@@ -120,6 +124,7 @@ class TimetableTripProcessor(val settings: TimetableCorSettings = TimetableCorSe
                         tripValidating = tripRequest.deepCopy()
                     }
                     worker("Очистка id") { tripValidating.id = TimetableTripId(tripValidating.id.asString().trim()) }
+                    worker("Очистка lock") { tripValidating.lock = TimetableTripLock(tripValidating.lock.asString().trim()) }
                     validateIdNotEmpty("Проверка на непустой id")
                     validateIdProperFormat("Проверка формата id")
                     finishTripValidation("Успешное завершение процедуры валидации")

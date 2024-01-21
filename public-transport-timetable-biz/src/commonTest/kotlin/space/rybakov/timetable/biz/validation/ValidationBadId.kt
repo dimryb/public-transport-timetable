@@ -20,6 +20,7 @@ fun validationIdCorrect(command: TimetableCommand, processor: TimetableTripProce
             name = "abc",
             description = "abc",
             tripType = TimetableDirection.FORWARD,
+            lock = TimetableTripLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -38,6 +39,7 @@ fun validationIdTrim(command: TimetableCommand, processor: TimetableTripProcesso
             name = "abc",
             description = "abc",
             tripType = TimetableDirection.FORWARD,
+            lock = TimetableTripLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -56,6 +58,7 @@ fun validationIdEmpty(command: TimetableCommand, processor: TimetableTripProcess
             name = "abc",
             description = "abc",
             tripType = TimetableDirection.FORWARD,
+            lock = TimetableTripLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
@@ -77,6 +80,7 @@ fun validationIdFormat(command: TimetableCommand, processor: TimetableTripProces
             name = "abc",
             description = "abc",
             tripType = TimetableDirection.FORWARD,
+            lock = TimetableTripLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)

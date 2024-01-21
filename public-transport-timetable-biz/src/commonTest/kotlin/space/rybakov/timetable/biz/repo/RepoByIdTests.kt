@@ -48,6 +48,7 @@ fun repoNotFoundTest(command: TimetableCommand) = runTest {
             name = "xyz",
             description = "xyz",
             tripType = TimetableDirection.FORWARD,
+            lock = TimetableTripLock("123-234-abc-ABC"),
         ),
     )
     processor.exec(ctx)
