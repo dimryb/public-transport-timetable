@@ -103,6 +103,7 @@ kotlin {
 
                 implementation(project(":public-transport-timetable-repo-in-memory"))
                 implementation(project(":public-transport-timetable-repo-stubs"))
+                implementation(project(":public-transport-timetable-repo-tests"))
             }
         }
 

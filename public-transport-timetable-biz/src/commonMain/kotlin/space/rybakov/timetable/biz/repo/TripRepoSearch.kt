@@ -12,7 +12,7 @@ fun ICorChainDsl<TimetableContext>.repoSearch(title: String) = worker {
     on { state == TimetableState.RUNNING }
     handle {
         val request = DbTripFilterRequest(
-            titleFilter = tripFilterValidated.searchString,
+            nameFilter = tripFilterValidated.searchString,
             ownerId = tripFilterValidated.ownerId,
             direction = tripFilterValidated.direction,
         )

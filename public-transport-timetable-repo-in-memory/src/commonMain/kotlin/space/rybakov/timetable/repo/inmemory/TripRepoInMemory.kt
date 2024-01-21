@@ -97,7 +97,7 @@ class TripRepoInMemory(
                 } ?: true
             }
             .filter { entry ->
-                rq.titleFilter.takeIf { it.isNotBlank() }?.let {
+                rq.nameFilter.takeIf { it.isNotBlank() }?.let {
                     entry.value.name?.contains(it) ?: false
                 } ?: true
             }
