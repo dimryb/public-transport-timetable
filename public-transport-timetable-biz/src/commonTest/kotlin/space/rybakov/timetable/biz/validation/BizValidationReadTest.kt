@@ -1,4 +1,4 @@
-package space.rybakov.timetable.biz.validation.validation
+package space.rybakov.timetable.biz.validation
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import space.rybakov.timetable.backend.repository.inmemory.TripRepoStub
@@ -8,9 +8,9 @@ import space.rybakov.timetable.common.models.TimetableCommand
 import kotlin.test.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class BizValidationDeleteTest {
+class BizValidationReadTest {
 
-    private val command = TimetableCommand.DELETE
+    private val command = TimetableCommand.READ
     private val settings by lazy {
         TimetableCorSettings(
             repoTest = TripRepoStub()
@@ -22,7 +22,6 @@ class BizValidationDeleteTest {
     @Test fun trimId() = validationIdTrim(command, processor)
     @Test fun emptyId() = validationIdEmpty(command, processor)
     @Test fun badFormatId() = validationIdFormat(command, processor)
-
 
 }
 

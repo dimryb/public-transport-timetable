@@ -1,4 +1,4 @@
-package space.rybakov.timetable.biz.validation.validation
+package space.rybakov.timetable.biz.validation
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest

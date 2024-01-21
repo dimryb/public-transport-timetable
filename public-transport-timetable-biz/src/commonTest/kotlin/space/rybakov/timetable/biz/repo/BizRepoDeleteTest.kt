@@ -1,4 +1,4 @@
-package repo
+package space.rybakov.timetable.biz.repo
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -10,12 +10,13 @@ import space.rybakov.timetable.common.models.*
 import space.rybakov.timetable.common.repo.DbTripResponse
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class BizRepoUpdateTest {
+class BizRepoDeleteTest {
 
     private val userId = TimetableUserId("321")
-    private val command = TimetableCommand.UPDATE
+    private val command = TimetableCommand.DELETE
     private val initTrip = TimetableTrip(
         id = TimetableTripId("123"),
         name = "abc",
@@ -23,25 +24,24 @@ class BizRepoUpdateTest {
         ownerId = userId,
         tripType = TimetableDirection.FORWARD,
     )
-    private val repo by lazy { TripRepositoryMock(
-        invokeReadTrip = {
-            DbTripResponse(
-                isSuccess = true,
-                data = initTrip,
-            )
-        },
-        invokeUpdateTrip = {
-            DbTripResponse(
-                isSuccess = true,
-                data = TimetableTrip(
-                    id = TimetableTripId("123"),
-                    name = "xyz",
-                    description = "xyz",
-                    tripType = TimetableDirection.FORWARD,
-                )
-            )
-        }
-    ) }
+    private val repo by lazy {
+        TripRepositoryMock(
+            invokeReadTrip = {
+               DbTripResponse(
+                   isSuccess = true,
+                   data = initTrip,
+               )
+            },
+            invokeDeleteTrip = {
+                if (it.id == initTrip.id)
+                    DbTripResponse(
+                        isSuccess = true,
+                        data = initTrip
+                    )
+                else DbTripResponse(isSuccess = false, data = null)
+            }
+        )
+    }
     private val settings by lazy {
         TimetableCorSettings(
             repoTest = repo
@@ -50,12 +50,9 @@ class BizRepoUpdateTest {
     private val processor by lazy { TimetableTripProcessor(settings) }
 
     @Test
-    fun repoUpdateSuccessTest() = runTest {
+    fun repoDeleteSuccessTest() = runTest {
         val adToUpdate = TimetableTrip(
             id = TimetableTripId("123"),
-            name = "xyz",
-            description = "xyz",
-            tripType = TimetableDirection.FORWARD,
         )
         val ctx = TimetableContext(
             command = command,
@@ -65,12 +62,13 @@ class BizRepoUpdateTest {
         )
         processor.exec(ctx)
         assertEquals(TimetableState.FINISHING, ctx.state)
-        assertEquals(adToUpdate.id, ctx.tripResponse.id)
-        assertEquals(adToUpdate.name, ctx.tripResponse.name)
-        assertEquals(adToUpdate.description, ctx.tripResponse.description)
-        assertEquals(adToUpdate.tripType, ctx.tripResponse.tripType)
+        assertTrue { ctx.errors.isEmpty() }
+        assertEquals(initTrip.id, ctx.tripResponse.id)
+        assertEquals(initTrip.name, ctx.tripResponse.name)
+        assertEquals(initTrip.description, ctx.tripResponse.description)
+        assertEquals(initTrip.tripType, ctx.tripResponse.tripType)
     }
 
     @Test
-    fun repoUpdateNotFoundTest() = repoNotFoundTest(command)
+    fun repoDeleteNotFoundTest() = repoNotFoundTest(command)
 }

@@ -1,4 +1,4 @@
-package repo
+package space.rybakov.timetable.biz.repo
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest

@@ -1,4 +1,4 @@
-package repo
+package space.rybakov.timetable.biz.repo
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -10,13 +10,11 @@ import space.rybakov.timetable.common.models.*
 import space.rybakov.timetable.common.repo.DbTripResponse
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
-@OptIn(ExperimentalCoroutinesApi::class)
-class BizRepoDeleteTest {
+class BizRepoReadTest {
 
     private val userId = TimetableUserId("321")
-    private val command = TimetableCommand.DELETE
+    private val command = TimetableCommand.READ
     private val initTrip = TimetableTrip(
         id = TimetableTripId("123"),
         name = "abc",
@@ -24,24 +22,14 @@ class BizRepoDeleteTest {
         ownerId = userId,
         tripType = TimetableDirection.FORWARD,
     )
-    private val repo by lazy {
-        TripRepositoryMock(
-            invokeReadTrip = {
-               DbTripResponse(
-                   isSuccess = true,
-                   data = initTrip,
-               )
-            },
-            invokeDeleteTrip = {
-                if (it.id == initTrip.id)
-                    DbTripResponse(
-                        isSuccess = true,
-                        data = initTrip
-                    )
-                else DbTripResponse(isSuccess = false, data = null)
-            }
-        )
-    }
+    private val repo by lazy { TripRepositoryMock(
+        invokeReadTrip = {
+            DbTripResponse(
+                isSuccess = true,
+                data = initTrip,
+            )
+        }
+    ) }
     private val settings by lazy {
         TimetableCorSettings(
             repoTest = repo
@@ -49,26 +37,26 @@ class BizRepoDeleteTest {
     }
     private val processor by lazy { TimetableTripProcessor(settings) }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun repoDeleteSuccessTest() = runTest {
-        val adToUpdate = TimetableTrip(
-            id = TimetableTripId("123"),
-        )
+    fun repoReadSuccessTest() = runTest {
         val ctx = TimetableContext(
             command = command,
             state = TimetableState.NONE,
             workMode = TimetableWorkMode.TEST,
-            tripRequest = adToUpdate,
+            tripRequest = TimetableTrip(
+                id = TimetableTripId("123"),
+            ),
         )
         processor.exec(ctx)
         assertEquals(TimetableState.FINISHING, ctx.state)
-        assertTrue { ctx.errors.isEmpty() }
         assertEquals(initTrip.id, ctx.tripResponse.id)
         assertEquals(initTrip.name, ctx.tripResponse.name)
         assertEquals(initTrip.description, ctx.tripResponse.description)
         assertEquals(initTrip.tripType, ctx.tripResponse.tripType)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun repoDeleteNotFoundTest() = repoNotFoundTest(command)
+    fun repoReadNotFoundTest() = repoNotFoundTest(command)
 }

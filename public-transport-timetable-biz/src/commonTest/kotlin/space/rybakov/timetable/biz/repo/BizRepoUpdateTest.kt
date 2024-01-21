@@ -1,4 +1,4 @@
-package repo
+package space.rybakov.timetable.biz.repo
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -11,10 +11,11 @@ import space.rybakov.timetable.common.repo.DbTripResponse
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class BizRepoReadTest {
+@OptIn(ExperimentalCoroutinesApi::class)
+class BizRepoUpdateTest {
 
     private val userId = TimetableUserId("321")
-    private val command = TimetableCommand.READ
+    private val command = TimetableCommand.UPDATE
     private val initTrip = TimetableTrip(
         id = TimetableTripId("123"),
         name = "abc",
@@ -28,6 +29,17 @@ class BizRepoReadTest {
                 isSuccess = true,
                 data = initTrip,
             )
+        },
+        invokeUpdateTrip = {
+            DbTripResponse(
+                isSuccess = true,
+                data = TimetableTrip(
+                    id = TimetableTripId("123"),
+                    name = "xyz",
+                    description = "xyz",
+                    tripType = TimetableDirection.FORWARD,
+                )
+            )
         }
     ) }
     private val settings by lazy {
@@ -37,26 +49,28 @@ class BizRepoReadTest {
     }
     private val processor by lazy { TimetableTripProcessor(settings) }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun repoReadSuccessTest() = runTest {
+    fun repoUpdateSuccessTest() = runTest {
+        val adToUpdate = TimetableTrip(
+            id = TimetableTripId("123"),
+            name = "xyz",
+            description = "xyz",
+            tripType = TimetableDirection.FORWARD,
+        )
         val ctx = TimetableContext(
             command = command,
             state = TimetableState.NONE,
             workMode = TimetableWorkMode.TEST,
-            tripRequest = TimetableTrip(
-                id = TimetableTripId("123"),
-            ),
+            tripRequest = adToUpdate,
         )
         processor.exec(ctx)
         assertEquals(TimetableState.FINISHING, ctx.state)
-        assertEquals(initTrip.id, ctx.tripResponse.id)
-        assertEquals(initTrip.name, ctx.tripResponse.name)
-        assertEquals(initTrip.description, ctx.tripResponse.description)
-        assertEquals(initTrip.tripType, ctx.tripResponse.tripType)
+        assertEquals(adToUpdate.id, ctx.tripResponse.id)
+        assertEquals(adToUpdate.name, ctx.tripResponse.name)
+        assertEquals(adToUpdate.description, ctx.tripResponse.description)
+        assertEquals(adToUpdate.tripType, ctx.tripResponse.tripType)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun repoReadNotFoundTest() = repoNotFoundTest(command)
+    fun repoUpdateNotFoundTest() = repoNotFoundTest(command)
 }

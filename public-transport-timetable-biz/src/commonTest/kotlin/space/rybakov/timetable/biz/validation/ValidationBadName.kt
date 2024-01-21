@@ -1,4 +1,4 @@
-package space.rybakov.timetable.biz.validation.validation
+package space.rybakov.timetable.biz.validation
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -9,9 +9,11 @@ import space.rybakov.timetable.stubs.TimetableTripStub
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
+
 private val stub = TimetableTripStub.get()
+
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationDescriptionCorrect(command: TimetableCommand, processor: TimetableTripProcessor) = runTest {
+fun validationNameCorrect(command: TimetableCommand, processor: TimetableTripProcessor) = runTest {
     val ctx = TimetableContext(
         command = command,
         state = TimetableState.NONE,
@@ -26,38 +28,38 @@ fun validationDescriptionCorrect(command: TimetableCommand, processor: Timetable
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
     assertNotEquals(TimetableState.FAILING, ctx.state)
-    assertEquals("abc", ctx.tripValidated.description)
+    assertEquals("abc", ctx.tripValidated.name)
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationDescriptionTrim(command: TimetableCommand, processor: TimetableTripProcessor) = runTest {
+fun validationNameTrim(command: TimetableCommand, processor: TimetableTripProcessor) = runTest {
     val ctx = TimetableContext(
         command = command,
         state = TimetableState.NONE,
         workMode = TimetableWorkMode.TEST,
         tripRequest = TimetableTrip(
             id = stub.id,
-            name = "abc",
-            description = " \n\tabc \n\t",
+            name = " \n\t abc \t\n ",
+            description = "abc",
             tripType = TimetableDirection.FORWARD,
         ),
     )
     processor.exec(ctx)
     assertEquals(0, ctx.errors.size)
     assertNotEquals(TimetableState.FAILING, ctx.state)
-    assertEquals("abc", ctx.tripValidated.description)
+    assertEquals("abc", ctx.tripValidated.name)
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationDescriptionEmpty(command: TimetableCommand, processor: TimetableTripProcessor) = runTest {
+fun validationNameEmpty(command: TimetableCommand, processor: TimetableTripProcessor) = runTest {
     val ctx = TimetableContext(
         command = command,
         state = TimetableState.NONE,
         workMode = TimetableWorkMode.TEST,
         tripRequest = TimetableTrip(
             id = stub.id,
-            name = "abc",
-            description = "",
+            name = "",
+            description = "abc",
             tripType = TimetableDirection.FORWARD,
         ),
     )
@@ -65,20 +67,20 @@ fun validationDescriptionEmpty(command: TimetableCommand, processor: TimetableTr
     assertEquals(1, ctx.errors.size)
     assertEquals(TimetableState.FAILING, ctx.state)
     val error = ctx.errors.firstOrNull()
-    assertEquals("description", error?.field)
-    assertContains(error?.message ?: "", "description")
+    assertEquals("name", error?.field)
+    assertContains(error?.message ?: "", "name")
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
-fun validationDescriptionSymbols(command: TimetableCommand, processor: TimetableTripProcessor) = runTest {
+fun validationNameSymbols(command: TimetableCommand, processor: TimetableTripProcessor) = runTest {
     val ctx = TimetableContext(
         command = command,
         state = TimetableState.NONE,
         workMode = TimetableWorkMode.TEST,
         tripRequest = TimetableTrip(
-            id = stub.id,
-            name = "abc",
-            description = "!@#$%^&*(),.{}",
+            id = TimetableTripId("123"),
+            name = "!@#$%^&*(),.{}",
+            description = "abc",
             tripType = TimetableDirection.FORWARD,
         ),
     )
@@ -86,6 +88,6 @@ fun validationDescriptionSymbols(command: TimetableCommand, processor: Timetable
     assertEquals(1, ctx.errors.size)
     assertEquals(TimetableState.FAILING, ctx.state)
     val error = ctx.errors.firstOrNull()
-    assertEquals("description", error?.field)
-    assertContains(error?.message ?: "", "description")
+    assertEquals("name", error?.field)
+    assertContains(error?.message ?: "", "name")
 }
