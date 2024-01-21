@@ -7,6 +7,6 @@ import space.rybakov.timetable.logging.common.TtLoggerProvider
 data class TimetableAppSettings(
     val appUrls: List<String> = emptyList(),
     val corSettings: TimetableCorSettings = TimetableCorSettings(),
-    val processor: TimetableTripProcessor = TimetableTripProcessor(),
+    val processor: TimetableTripProcessor = TimetableTripProcessor(corSettings),
     val logger: TtLoggerProvider = TtLoggerProvider()
 )
