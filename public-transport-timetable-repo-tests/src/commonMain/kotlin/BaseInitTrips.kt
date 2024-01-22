@@ -4,7 +4,7 @@ import space.rybakov.timetable.common.models.*
 
 abstract class BaseInitTrips(val op: String): IInitObjects<TimetableTrip> {
 
-    open val lockOld: TimetableTripLock = TimetableTripLock("20000000-0000-0000-0000-000000000001")
+    open val lockOld: TimetableTripLock = TimetableTripLock("20000000-0000-0000-0000-000000000002")
     open val lockBad: TimetableTripLock = TimetableTripLock("20000000-0000-0000-0000-000000000009")
     fun createInitTestModel(
         suf: String,
