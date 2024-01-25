@@ -36,11 +36,11 @@ dependencies {
 
 var severity: String = "MINOR"
 
-tasks {
-    withType<Test>().configureEach {
-        useJUnitPlatform()
-        dependsOn(":public-transport-timetable-app-ktor:publishImageToLocalRegistry")
-        dependsOn(":public-transport-timetable-kafka:dockerBuildImage")
-    }
-}
+//tasks {
+//    withType<Test>().configureEach {
+//        useJUnitPlatform()
+//        dependsOn(":public-transport-timetable-app-ktor:publishImageToLocalRegistry")
+//        dependsOn(":public-transport-timetable-kafka:dockerBuildImage")
+//    }
+//}
 

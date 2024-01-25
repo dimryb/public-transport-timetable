@@ -21,7 +21,7 @@ components:
           type: string
         source:
           type: string
-        ad:
+        trip:
           $ref: '#/components/schemas/TimetableLogModel'
         errors:
           type: array
@@ -29,7 +29,7 @@ components:
             $ref: '#/components/schemas/ErrorLogModel'
 
     TimetableLogModel:
-      title: Модель лога для микросервиса Marketplace
+      title: Модель лога для микросервиса Timetable
       type: object
       properties:
         requestId:
@@ -68,22 +68,18 @@ components:
           type: string
 
     TripLog:
-      title: Модель лога для объявления
+      title: Модель лога для маршрута
       type: object
       properties:
         id:
           type: string
-        title:
+        name:
           type: string
         description:
           type: string
-        adType:
-          type: string
-        visibility:
+        tripType:
           type: string
         ownerId:
-          type: string
-        productId:
           type: string
         permissions:
           type: array
@@ -98,6 +94,6 @@ components:
           type: string
         ownerId:
           type: string
-        dealSide:
+        direction:
           type: string
 

@@ -18,7 +18,7 @@ fun TimetableContext.fromTransport(request: IRequest) = when (request) {
 private fun String?.toTripId() = this?.let { TimetableTripId(it) } ?: TimetableTripId.NONE
 private fun String?.toTripWithId() = TimetableTrip(id = this.toTripId())
 private fun IRequest?.requestId() = this?.requestId?.let { TimetableRequestId(it) } ?: TimetableRequestId.NONE
-
+private fun String?.toTripLock() = this?.let { TimetableTripLock(it) } ?: TimetableTripLock.NONE
 private fun TripDebug?.transportToWorkMode(): TimetableWorkMode = when (this?.mode) {
     TripRequestDebugMode.PROD -> TimetableWorkMode.PROD
     TripRequestDebugMode.TEST -> TimetableWorkMode.TEST
@@ -53,6 +53,12 @@ fun TimetableContext.fromTransport(request: TripReadRequest) {
     stubCase = request.debug.transportToStubCase()
 }
 
+private fun TripReadObject?.toInternal(): TimetableTrip = if (this != null) {
+    TimetableTrip(id = id.toTripId())
+} else {
+    TimetableTrip.NONE
+}
+
 fun TimetableContext.fromTransport(request: TripUpdateRequest) {
     command = TimetableCommand.UPDATE
     requestId = request.requestId()
@@ -64,9 +70,19 @@ fun TimetableContext.fromTransport(request: TripUpdateRequest) {
 fun TimetableContext.fromTransport(request: TripDeleteRequest) {
     command = TimetableCommand.DELETE
     requestId = request.requestId()
+    tripRequest = request.trip.toInternal()
     tripRequest = request.trip?.id.toTripWithId()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
+}
+
+private fun TripDeleteObject?.toInternal(): TimetableTrip = if (this != null) {
+    TimetableTrip(
+        id = id.toTripId(),
+        lock = lock.toTripLock(),
+    )
+} else {
+    TimetableTrip.NONE
 }
 
 fun TimetableContext.fromTransport(request: TripSearchRequest) {
@@ -92,6 +108,7 @@ private fun TripUpdateObject.toInternal(): TimetableTrip = TimetableTrip(
     name = this.name ?: "",
     description = this.description ?: "",
     tripType = this.tripType.fromTransport(),
+    lock = lock.toTripLock(),
 )
 
 private fun Direction?.fromTransport(): TimetableDirection = when (this) {

@@ -29,6 +29,10 @@ kotlin {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
 
+                implementation(project(":public-transport-timetable-repo-stubs"))
+                implementation(project(":public-transport-timetable-repo-tests"))
+                implementation(project(":public-transport-timetable-repo-in-memory"))
+
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
             }
         }
